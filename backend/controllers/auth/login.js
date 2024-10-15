@@ -36,7 +36,8 @@ const loginCtrl = async (req, res) => {
 
             const cookieOption = {
                 httpOnly: true,
-                sameSite: 'Strict',
+                sameSite: 'None',
+                secure: true,
                 path: '/'
             }
 
