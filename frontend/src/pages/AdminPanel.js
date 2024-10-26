@@ -57,7 +57,7 @@ const AdminPanel = () => {
                     </button>
                 </div>
             </aside>
-            <main className='min-h-screen w-full p-4'>
+            <main className='h-screen w-full p-4'>
                 <Outlet />
             </main>
         </div>
