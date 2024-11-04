@@ -1,12 +1,15 @@
-import React, {useContext, useEffect, useState} from 'react';
-import displayCOPCurrency from "../helpers/displayCurrency";
-import {MdDelete} from "react-icons/md";
-import {cartApi, orderApi} from "../common";
-import {useAuthService} from "../services/authService";
-import {loadStripe} from "@stripe/stripe-js";
-import Context from "../context";
-import toastr                               from 'toastr';
-
+import React, {
+    useContext,
+    useEffect,
+    useState
+}                               from 'react';
+import OrderLocation            from '../components/OrderLocation';
+import { MdDelete }             from 'react-icons/md';
+import { cartApi }              from '../common';
+import { useAuthService }       from '../services/authService';
+import displayCOPCurrency       from '../helpers/displayCurrency';
+import Context                  from '../context';
+import toastr                   from 'toastr';
 
 const Cart = () => {
 
@@ -15,6 +18,7 @@ const Cart = () => {
 
     const loadingCart = new Array(3).fill(null);
 
+    const [showLocationOrder, setShowLocationOrder] = useState(false);
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -114,32 +118,7 @@ const Cart = () => {
             handleSessionClosed(data.error);
     };
 
-    const handlePayment = async () => {
-        const stripePromise = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
-
-        const response = await fetch(orderApi.paymentOrder.url,{
-            method : orderApi.paymentOrder.method,
-            credentials : 'include',
-            headers : {
-                'content-type' : 'application/json'
-            },
-            body : JSON.stringify({
-                cartItems: data
-            })
-        });
-
-        const dataResponse = await response.json();
-
-        if (dataResponse?.id)
-            await stripePromise.redirectToCheckout({sessionId: dataResponse.id});
-        else if (response.status === 500)
-            toastr.error(dataResponse.error);
-        else
-            await handleSessionClosed(dataResponse.error);
-    };
-
     useEffect(() => {
-        window.scrollTo(0, 0);
         fetchAllProductsToCart();
     }, []);
 
@@ -244,9 +223,9 @@ const Cart = () => {
                                         <div className='px-4'>
                                             <button
                                                 className='bg-blue-600 p-2 text-white w-full mt-2 font-bold rounded-full hover:bg-blue-700'
-                                                onClick={() => handlePayment()}
+                                                onClick={() => setShowLocationOrder(true)}
                                             >
-                                                Realizar Pago
+                                                Realizar Compra
                                             </button>
                                         </div>
 
@@ -258,6 +237,14 @@ const Cart = () => {
                 )
             }
 
+            {
+                showLocationOrder && (
+                    <OrderLocation
+                        onClose={() => setShowLocationOrder(false)}
+                        cartItems={data}
+                    />
+                )
+            }
         </div>
     );
 };

@@ -2,7 +2,7 @@ import stripe from '../../config/stripe.js';
 import UserModel from "../../models/userModel.js";
 
 const paymentCtrl = async (req, res) => {
-    const { cartItems } = req?.body;
+    const { cartItems, locationDetails } = req?.body;
 
     try {
         const user = await UserModel.findOne({_id: req.userId});
@@ -19,9 +19,12 @@ const paymentCtrl = async (req, res) => {
             ],
             customer_email: user?.email,
             metadata: {
-                userId: req.userId
+                userId: req.userId,
+                city: locationDetails.city,
+                address: locationDetails.address,
+                zipCode: locationDetails.zipCode
             },
-            line_items: cartItems.map((item, index) => {
+            line_items: cartItems.map((item) => {
                 return {
                     price_data: {
                         currency: 'cop',

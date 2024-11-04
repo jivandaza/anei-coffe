@@ -107,6 +107,8 @@ const AllOrder = () => {
                                                                 )
                                                             })
                                                         }
+                                                        <p className='text-ellipsis'>Ciudad: {order?.city}</p>
+                                                        <p className='text-ellipsis'>Dirección: {order?.address}</p>
                                                     </div>
                                                 </div>
                                             </div>

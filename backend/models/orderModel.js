@@ -24,6 +24,18 @@ const orderSchema = new mongoose.Schema({
             default: ''
         }
     },
+    city: {
+        type: String,
+        default: ''
+    },
+    address: {
+        type: String,
+        default: ''
+    },
+    zipCode: {
+        type: Number,
+        default: ''
+    },
     shipping_options: [],
     totalAmount: {
         type: Number,

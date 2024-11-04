@@ -39,8 +39,6 @@ const webhooks = async (req, res) => {
 
     let event;
 
-    console.log(endpointSecret);
-
     try {
         event = stripe.webhooks.constructEvent(payloadString, header, endpointSecret);
     } catch (error) {
@@ -60,6 +58,9 @@ const webhooks = async (req, res) => {
                 productDetails,
                 email: session.customer_email,
                 userId: session.metadata.userId,
+                city: session.metadata.city,
+                address: session.metadata.address,
+                zipCode: parseInt(session.metadata.zipCode),
                 paymentDetails: {
                     paymentId: session.payment_intent,
                     payment_method_types: session.payment_method_types,
