@@ -40,6 +40,10 @@ const orderSchema = new mongoose.Schema({
     totalAmount: {
         type: Number,
         default: 0
+    },
+    status: {
+        type: String,
+        default: 'processing'
     }
 }, {
     timestamps: true

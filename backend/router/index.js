@@ -21,37 +21,39 @@ import paymentCtrl                          from '../controllers/order/payment.j
 import webhookCtrl                          from '../controllers/order/webhook.js';
 import getAllOrderByUserCtrl                from '../controllers/order/getAllOrderByUser.js';
 import getAllOrderCtrl                      from '../controllers/order/getAllOrder.js';
+import updateStatusCtrl                     from '../controllers/order/updateStatus.js';
 
 const router = express.Router();
 
 //  auth routes
+router.get      (    '/auth/logout',                 logoutUserCtrl);
 router.post     (    '/auth/register',               registerUserCtrl);
 router.post     (    '/auth/login',                  loginUserCtrl);
-router.get      (    '/auth/logout',                 logoutUserCtrl);
 
 //  user routes
 router.get      (    '/user',                        authToken, getUserCtrl);
 router.get      (    '/users',                       authToken, authorizeRole('ADMIN'), getAllUsersCtrl);
 
 //  product routes
-router.post     (    '/product',                     authToken, authorizeRole('ADMIN'), addProductCtrl);
 router.get      (    '/product/:id',                 getProductCtrl);
 router.get      (    '/products',                    getAllProductsCtrl);
+router.post     (    '/product',                     authToken, authorizeRole('ADMIN'), addProductCtrl);
 router.put      (    '/product',                     authToken, authorizeRole('ADMIN'), editProductCtrl);
 router.delete   (    '/product/:id',                 authToken, authorizeRole('ADMIN'), deleteProductCtrl);
 router.delete   (    '/product/image',               authToken, authorizeRole('ADMIN'), deleteImageProductCtrl);
 
 // cart routes
-router.post     (    '/cart',                        authToken, addProductToCartCtrl);
 router.get      (    '/cart',                        authToken, allProductsToCartCtrl);
 router.get      (    '/cart/count',                  authToken, countProductsToCartCtrl);
+router.post     (    '/cart',                        authToken, addProductToCartCtrl);
 router.put      (    '/cart',                        authToken, editQuantityToCartCtrl);
 router.delete   (    '/cart/:id',                    authToken, deleteProductToCartCtrl);
 
 // payment and order routes
-router.post     (    '/checkout',                    authToken, paymentCtrl);
-router.post     (    '/webhook',                     webhookCtrl);
 router.get      (    '/order/user',                  authToken, getAllOrderByUserCtrl);
 router.get      (    '/order',                       authToken, authorizeRole('ADMIN'), getAllOrderCtrl);
+router.post     (    '/checkout',                    authToken, paymentCtrl);
+router.post     (    '/webhook',                     webhookCtrl);
+router.put      (    '/order/update-status',         authToken, updateStatusCtrl);
 
 export default router;

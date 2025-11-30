@@ -88,5 +88,9 @@ export const orderApi = {
     allOrder: {
         url: `${backendDomain}/api/order`,
         method: 'get'
+    },
+    updateOrderStatus: {
+        url: `${backendDomain}/api/order/update-status`,
+        method: 'put'
     }
 }
